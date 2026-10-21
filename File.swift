@@ -61,8 +61,6 @@ import Playgrounds
             && !inputDigits.contains(num)
         {
             inputDigits.append(num)
-        } else {
-            return
         }
     }
 
@@ -71,15 +69,12 @@ import Playgrounds
         // ゲーム中かつ、配列の数が0より大きい
         if gameState == .nowGame && inputDigits.count > 0 {
             inputDigits.removeLast()  // 最後(最新)の値を消す
-        } else {
-            return
         }
     }
 
     func pressDecide() {
         var hit: Int = 0
         var blow: Int = 0
-
         // ゲーム中かつ、現時点の入力が三つ格納されている
         guard gameState == .nowGame else {
             return
@@ -88,7 +83,6 @@ import Playgrounds
             print("数字は三つ選択せれていません")
             return
         }
-
         // 比較し加算する
         for n in inputDigits.indices {
             // 数字と位置の両方が一致していれば
@@ -103,85 +97,63 @@ import Playgrounds
         history.append(GuessEntry(digits: inputDigits, hit: hit, blow: blow))
         // ３ヒットならば
         if hit == 3 {
-            gameState == .finishGame
+            gameState = .finishGame
             print("正解！ \(history.count)回目でクリア")
         }
         // 仮
         for entry in history {
             print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
         }
-        
         // からにする
         inputDigits = []
     }
 
+    func newGame() {
+        gameState = .nowGame
+        cpuNumber = createCpuNum()
+        history = []
+        inputDigits = []
+    }
+
+    func displayResult() {
+        for entry in history {
+            print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
+        }
+    }
+
     // テスト出力
-
-    // step/2-1-models
-    print("--  step/2-1-models --")
-    print("gameState: \(gameState)")
-    print("cpuNum: \(cpuNumber.digits)")
-    print("inputDigits: \(inputDigits)")
-    print("history: \(history)")
-
-    // step/2-2-answer
-    print("--  step/2-2-answer --")
+    // -- 2-2 答えの作成：100回作って重複がないか --
     var ok = true
     for _ in 1...100 {
-        let n = createCpuNum()
-        let d = n.digits
-
+        let d = createCpuNum().digits
         if d[0] == d[1] || d[0] == d[2] || d[1] == d[2] {
             print("重複あり：\(d)")
             ok = false
         }
     }
-    print(ok ? "100回とも重複なし" : "失敗")
+    print(ok ? "2-2 答えの作成：OK" : "2-2 答えの作成：失敗")
 
-    // step/2-3-input
-
-    // pressNumber test
-    print("--  step/2-3-input --")
-    gameState = .nowGame
+    // -- 2-5 開いた直後は遊べない --
     pressNumber(1)
-    pressNumber(1)
-    pressNumber(2)
-    pressNumber(3)
-    pressNumber(4)
-    print("inputDigits: \(inputDigits)")
-    // pressDelete test
-    pressDelete()
-    print("inputDigits: \(inputDigits)")
-    inputDigits = []
-    gameState = .finishGame
+    print("開いた直後の入力：\(inputDigits)")        // [] なら OK
 
-    // step/2-4-decide
-    print("--  step/2-4-decide --")
-    gameState = .nowGame
-    (cpuNumber.first,cpuNumber.second,cpuNumber.third) = (3,7,1)
-    print("cpuNum: \(cpuNumber.digits)")
-    pressNumber(4)
+    // -- 2-4 判定：答えを 371 にして README の表どおりになるか --
+    newGame()
+    cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
+
+    let guesses = [[4, 5, 6], [1, 2, 3], [7, 1, 3], [3, 9, 1], [3, 1, 7], [3, 7, 1]]
+    for guess in guesses {
+        for n in guess {
+            pressNumber(n)
+        }
+        pressDecide()
+    }
+
+    // -- 2-5 正解後は押せない、ニューゲームでリセット --
+    print("正解後の状態：\(gameState)")              // finishGame なら OK
     pressNumber(5)
-    pressNumber(6)
-    pressDecide()
-    pressNumber(1)
-    pressNumber(2)
-    pressNumber(3)
-    pressDecide()
-    pressNumber(7)
-    pressNumber(1)
-    pressNumber(3)
-    pressDecide()
-    pressNumber(3)
-    pressNumber(9)
-    pressNumber(1)
-    pressDecide()
-    pressNumber(3)
-    pressNumber(1)
-    pressNumber(7)
-    pressDecide()
-    pressNumber(3)
-    pressNumber(7)
-    pressNumber(1)
-    pressDecide()
+    print("正解後の入力：\(inputDigits)")            // [] なら OK
+
+    newGame()
+    print("ニューゲーム後：履歴 \(history.count) 件、状態 \(gameState)")   // 0 件、nowGame なら OK
 }
