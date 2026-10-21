@@ -8,14 +8,14 @@ import Playgrounds
         case nowGame
         case finishGame
     }
-
+    
     // -- 構造体 --
     // 三桁の数字
     struct ThreeDigits {
         var first: Int
         var second: Int
         var third: Int
-
+        
         var digits: [Int] {
             [first, second, third]
         }
@@ -26,7 +26,7 @@ import Playgrounds
         let hit: Int
         let blow: Int
     }
-
+    
     // -- データ（値や状態を保持する）--
     // ゲームの状態、初期状態はゲーム終了状態
     var gameState: GameState = .finishGame
@@ -36,7 +36,7 @@ import Playgrounds
     var inputDigits: [Int] = []
     // プレイヤーの履歴
     var history: [GuessEntry] = []
-
+    
     // -- 処理 --
     // 重複しないランダムな三桁の数値を設定
     func createCpuNum() -> ThreeDigits {
@@ -53,7 +53,7 @@ import Playgrounds
             third: picked[2]
         )
     }
-
+    
     // 一つの値を受け取り、inputDigitsに格納する処理
     func pressNumber(_ num: Int) {
         // ゲーム中かつ、配列の数が３少ないかつ、配列の中にすでにある番号でない
@@ -63,7 +63,7 @@ import Playgrounds
             inputDigits.append(num)
         }
     }
-
+    
     // 最新に格納した値を一つ消す処理
     func pressDelete() {
         // ゲーム中かつ、配列の数が0より大きい
@@ -71,7 +71,7 @@ import Playgrounds
             inputDigits.removeLast()  // 最後(最新)の値を消す
         }
     }
-
+    
     func pressDecide() {
         var hit: Int = 0
         var blow: Int = 0
@@ -107,53 +107,87 @@ import Playgrounds
         // からにする
         inputDigits = []
     }
-
+    
     func newGame() {
         gameState = .nowGame
         cpuNumber = createCpuNum()
         history = []
         inputDigits = []
     }
-
+    
     func displayResult() {
         for entry in history {
             print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
         }
     }
-
+    
     // テスト出力
-    // -- 2-2 答えの作成：100回作って重複がないか --
-    var ok = true
-    for _ in 1...100 {
-        let d = createCpuNum().digits
-        if d[0] == d[1] || d[0] == d[2] || d[1] == d[2] {
-            print("重複あり：\(d)")
-            ok = false
-        }
+
+    // 結果を OK / NG で表示する
+    func check(_ title: String, _ result: Bool) {
+        print(result ? "OK" : "NG", title)
     }
-    print(ok ? "2-2 答えの作成：OK" : "2-2 答えの作成：失敗")
 
-    // -- 2-5 開いた直後は遊べない --
-    pressNumber(1)
-    print("開いた直後の入力：\(inputDigits)")        // [] なら OK
-
-    // -- 2-4 判定：答えを 371 にして README の表どおりになるか --
-    newGame()
-    cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
-
-    let guesses = [[4, 5, 6], [1, 2, 3], [7, 1, 3], [3, 9, 1], [3, 1, 7], [3, 7, 1]]
-    for guess in guesses {
-        for n in guess {
+    // 数字をまとめて入力する
+    func input(_ nums: [Int]) {
+        for n in nums {
             pressNumber(n)
         }
-        pressDecide()
     }
 
-    // -- 2-5 正解後は押せない、ニューゲームでリセット --
-    print("正解後の状態：\(gameState)")              // finishGame なら OK
-    pressNumber(5)
-    print("正解後の入力：\(inputDigits)")            // [] なら OK
+    print("--- 2-6 想定外のケース ---")
 
+    // 1. 開いた直後（ニューゲーム前）に数字・削除・決定を押す
+    //    ※ 必ず一番最初に実行する（newGame より前）
+    input([1, 2, 3])
+    pressDelete()
+    pressDecide()
+    check("1. 開いた直後は押せない", inputDigits.isEmpty && history.isEmpty)
+
+    // 2. すでに入力した数字を押す（1 → 1）
     newGame()
-    print("ニューゲーム後：履歴 \(history.count) 件、状態 \(gameState)")   // 0 件、nowGame なら OK
+    input([1, 1])
+    check("2. 同じ数字は押せない", inputDigits == [1])
+
+    // 3. 3桁入力したあとに、さらに数字を押す（1 → 2 → 3 → 4）
+    newGame()
+    input([1, 2, 3, 4])
+    check("3. 4つ目は無視される", inputDigits == [1, 2, 3])
+
+    // 4. 3桁そろっていないのに決定を押す（1 → 2 → 決定）
+    newGame()
+    input([1, 2])
+    pressDecide()
+    check("4. 3桁未満では決定できない", history.isEmpty && inputDigits == [1, 2])
+
+    // 5. 何も入力していないのに削除を押す
+    newGame()
+    pressDelete()
+    check("5. 空のとき削除しても何も起きない", inputDigits.isEmpty)
+
+    // 6. 正解したあとに数字・決定を押す
+    newGame()
+    cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
+    input([3, 7, 1])
+    pressDecide()
+    input([5])
+    pressDecide()
+    check("6. 正解後は押せない", gameState == .finishGame && inputDigits.isEmpty && history.count == 1)
+
+    // 7. 前と同じ予想をもう一度決定する
+    newGame()
+    cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
+    input([1, 2, 3])
+    pressDecide()
+    input([1, 2, 3])
+    pressDecide()
+    check("7. 同じ予想も受け付けて回数に数える", history.count == 2)
+
+    // 8. ゲームの途中でニューゲームを押す
+    newGame()
+    input([1, 2, 3])
+    pressDecide()
+    input([4])
+    newGame()
+    check("8. 途中のニューゲームで全部リセット", history.isEmpty && inputDigits.isEmpty && gameState == .nowGame)
 }
