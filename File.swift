@@ -31,7 +31,7 @@ import Playgrounds
     // ゲームの状態、初期状態はゲーム終了状態
     var gameState: GameState = .finishGame
     // CPUの持つ値
-    var cpuNum: ThreeDigits = createCpuNum()
+    var cpuNumber: ThreeDigits = createCpuNum()
     // プレイヤーが現時点で入力している値
     var inputDigits: [Int] = []
     // プレイヤーの履歴
@@ -53,7 +53,7 @@ import Playgrounds
             third: picked[2]
         )
     }
-    
+
     // 一つの値を受け取り、inputDigitsに格納する処理
     func pressNumber(_ num: Int) {
         // ゲーム中かつ、配列の数が３少ないかつ、配列の中にすでにある番号でない
@@ -65,26 +65,65 @@ import Playgrounds
             return
         }
     }
-    
+
     // 最新に格納した値を一つ消す処理
     func pressDelete() {
         // ゲーム中かつ、配列の数が0より大きい
-        if gameState == .nowGame && inputDigits.count > 0{
-            inputDigits.removeLast()   // 最後(最新)の値を消す
+        if gameState == .nowGame && inputDigits.count > 0 {
+            inputDigits.removeLast()  // 最後(最新)の値を消す
         } else {
             return
         }
     }
 
+    func pressDecide() {
+        var hit: Int = 0
+        var blow: Int = 0
+
+        // ゲーム中かつ、現時点の入力が三つ格納されている
+        guard gameState == .nowGame else {
+            return
+        }
+        guard inputDigits.count == 3 else {
+            print("数字は三つ選択せれていません")
+            return
+        }
+
+        // 比較し加算する
+        for n in inputDigits.indices {
+            // 数字と位置の両方が一致していれば
+            if cpuNumber.digits[n] == inputDigits[n] {
+                hit += 1
+                // 数字は答えに含まれている
+            } else if cpuNumber.digits.contains(inputDigits[n]) {
+                blow += 1
+            }
+        }
+        // 履歴に格納
+        history.append(GuessEntry(digits: inputDigits, hit: hit, blow: blow))
+        // ３ヒットならば
+        if hit == 3 {
+            gameState == .finishGame
+            print("正解！ \(history.count)回目でクリア")
+        }
+        // 仮
+        for entry in history {
+            print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
+        }
+        
+        // からにする
+        inputDigits = []
+    }
+
     // テスト出力
-    
+
     // step/2-1-models
     print("--  step/2-1-models --")
     print("gameState: \(gameState)")
-    print("cpuNum: \(cpuNum.digits)")
+    print("cpuNum: \(cpuNumber.digits)")
     print("inputDigits: \(inputDigits)")
     print("history: \(history)")
-    
+
     // step/2-2-answer
     print("--  step/2-2-answer --")
     var ok = true
@@ -98,9 +137,9 @@ import Playgrounds
         }
     }
     print(ok ? "100回とも重複なし" : "失敗")
-    
+
     // step/2-3-input
-    
+
     // pressNumber test
     print("--  step/2-3-input --")
     gameState = .nowGame
@@ -113,11 +152,36 @@ import Playgrounds
     // pressDelete test
     pressDelete()
     print("inputDigits: \(inputDigits)")
-    
+    inputDigits = []
     gameState = .finishGame
-    
-    
-    
-    
-    
+
+    // step/2-4-decide
+    print("--  step/2-4-decide --")
+    gameState = .nowGame
+    (cpuNumber.first,cpuNumber.second,cpuNumber.third) = (3,7,1)
+    print("cpuNum: \(cpuNumber.digits)")
+    pressNumber(4)
+    pressNumber(5)
+    pressNumber(6)
+    pressDecide()
+    pressNumber(1)
+    pressNumber(2)
+    pressNumber(3)
+    pressDecide()
+    pressNumber(7)
+    pressNumber(1)
+    pressNumber(3)
+    pressDecide()
+    pressNumber(3)
+    pressNumber(9)
+    pressNumber(1)
+    pressDecide()
+    pressNumber(3)
+    pressNumber(1)
+    pressNumber(7)
+    pressDecide()
+    pressNumber(3)
+    pressNumber(7)
+    pressNumber(1)
+    pressDecide()
 }
