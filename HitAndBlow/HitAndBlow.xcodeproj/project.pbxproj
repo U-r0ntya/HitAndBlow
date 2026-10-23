@@ -10,9 +10,22 @@
 		5A80F86F308902C90038B5AA /* HitAndBlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HitAndBlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5A80F8F030896B200038B5AA /* Exceptions for "HitAndBlow" folder in "HitAndBlow" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5A80F86E308902C90038B5AA /* HitAndBlow */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5A80F871308902C90038B5AA /* HitAndBlow */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5A80F8F030896B200038B5AA /* Exceptions for "HitAndBlow" folder in "HitAndBlow" target */,
+			);
 			path = HitAndBlow;
 			sourceTree = "<group>";
 		};
@@ -246,6 +259,7 @@
 				DEVELOPMENT_TEAM = HUF5D9TMY7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HitAndBlow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -278,6 +292,7 @@
 				DEVELOPMENT_TEAM = HUF5D9TMY7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HitAndBlow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
