@@ -9,7 +9,14 @@ import SwiftUI
 
 struct GameSection: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("ゲーム画面")
+            HStack {
+                Text("-")
+                Text("-")
+                Text("-")
+            }
+        }
     }
 }
 

@@ -9,7 +9,14 @@ import SwiftUI
 
 struct CpuSection: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Text("CPU")
+                Text("-")
+                Text("-")
+                Text("-")
+            }
+        }
     }
 }
 
