@@ -9,7 +9,28 @@ import SwiftUI
 
 struct DeleteButton: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            print("削除")  // 4-2 で game.pressDelete() に変える
+        } label: {
+            Image(systemName: "delete.left")
+                .font(
+                    .system(size: 24, weight: .semibold)
+                )
+                .foregroundStyle(
+                    Color("OnHighlightColor")
+                )
+                .frame(width: 60, height: 50)
+                .background(Color("HighlightColor"))
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 12)
+                )
+                .shadow(
+                    color: .black.opacity(0.2),
+                    radius: 4,
+                    x: 0,
+                    y: 2
+                )
+        }
     }
 }
 
