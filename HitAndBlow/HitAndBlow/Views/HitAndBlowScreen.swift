@@ -17,8 +17,6 @@ struct HitAndBlowScreen: View {
                                 maxHeight: height * 0.1,
                                 alignment: .center
                             )
-                            .background(.red.opacity(0.3))  // 確認用（終わったら消す）
-
                         // --------------- 5：ゲーム画面
                         GameSection()
                             .frame(
@@ -26,14 +24,12 @@ struct HitAndBlowScreen: View {
                                 maxHeight: height * 0.5,
                                 alignment: .top
                             )
-                            .background(.blue.opacity(0.3))  // 確認用（終わったら消す）
                         // --------------- 1：番号表示
                         MyNumberSection()
-                        .frame(
-                            maxWidth: .infinity,
-                            maxHeight: height * 0.1,
-                        )
-                        .background(.orange.opacity(0.3))  // 確認用（終わったら消す）
+                            .frame(
+                                maxWidth: .infinity,
+                                maxHeight: height * 0.1,
+                            )
                         // --------------- 3：ボタン
                         ControlSection()
                             .padding(12)
@@ -42,7 +38,6 @@ struct HitAndBlowScreen: View {
                                 maxHeight: height * 0.3,
                                 alignment: .top
                             )
-                            .background(.yellow.opacity(0.3))  // 確認用（終わったら消す）
                     }
                 }
             }

@@ -11,11 +11,7 @@ struct GameSection: View {
     var body: some View {
         VStack {
             Text("ゲーム画面")
-            HStack {
-                Text("-")
-                Text("-")
-                Text("-")
-            }
+            HistoryRow()
         }
     }
 }
