@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct DecideButton: View {
+    var game: HitAndBlowViewModel
     var body: some View {
         Button {
-            print("決定")
+            game.pressDecide()
         } label: {
             Text("決定")
                 .font(
@@ -36,8 +37,4 @@ struct DecideButton: View {
                 )
         }
     }
-}
-
-#Preview {
-    DecideButton()
 }

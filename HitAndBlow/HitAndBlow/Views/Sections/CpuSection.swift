@@ -8,18 +8,16 @@
 import SwiftUI
 
 struct CpuSection: View {
+    var game: HitAndBlowViewModel
     var body: some View {
         VStack {
             HStack {
                 Text("CPU")
-                Text("-")
-                Text("-")
-                Text("-")
+                Text("\(game.cpuNumber.digits[0])")
+                Text("\(game.cpuNumber.digits[1])")
+                Text("\(game.cpuNumber.digits[2])")
             }
         }
     }
 }
 
-#Preview {
-    CpuSection()
-}

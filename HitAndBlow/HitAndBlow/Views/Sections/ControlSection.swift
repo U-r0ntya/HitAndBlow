@@ -16,18 +16,17 @@ struct ControlSection: View {
                 ForEach([[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]], id: \.self) { row in
                     HStack(spacing: 12) {
                         ForEach(row, id: \.self) { n in
-                            NumberButton(number: n,game: game)
+                            NumberButton(number: n, game: game)
                         }
                     }
                 }
             }
             HStack {
                 // 決定ボタン
-                DecideButton()
+                DecideButton(game: game)
                 // 削除ボタン
-                DeleteButton()
+                DeleteButton(game: game)
             }
         }
     }
 }
-

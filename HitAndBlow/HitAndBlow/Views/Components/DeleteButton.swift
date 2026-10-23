@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct DeleteButton: View {
+    var game: HitAndBlowViewModel
     var body: some View {
         Button {
-            print("削除")  // 4-2 で game.pressDelete() に変える
+            game.pressDelete()
         } label: {
             Image(systemName: "delete.left")
                 .font(
@@ -34,6 +35,4 @@ struct DeleteButton: View {
     }
 }
 
-#Preview {
-    DeleteButton()
-}
+

@@ -13,14 +13,14 @@ struct HitAndBlowScreen: View {
 
                     VStack(spacing: 0) {
                         // --------------- 1：CPU
-                        CpuSection()
+                        CpuSection(game: game)
                             .frame(
                                 maxWidth: .infinity,
                                 maxHeight: height * 0.1,
                                 alignment: .center
                             )
                         // --------------- 5：ゲーム画面
-                        GameSection()
+                        GameSection(game: game)
                             .frame(
                                 maxWidth: .infinity,
                                 maxHeight: height * 0.5,
@@ -49,12 +49,11 @@ struct HitAndBlowScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("TextColor"), for: .navigationBar)  // バーの背景色
             .toolbarBackground(.visible, for: .navigationBar)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("ニューゲーム") {
                         game.newGame()
-                    }.foregroundStyle(Color("TextColor"))
+                    }.foregroundStyle(Color("BackgroundColor"))
                         .font(.custom("ShipporiMinchoB1-Bold", size: 25))
                 }
             }

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct GameSection: View {
+    var game: HitAndBlowViewModel
+
     var body: some View {
         VStack {
-            Text("ゲーム画面")
-            HistoryRow()
+            ForEach(game.history.indices, id: \.self) { i in
+                HistoryRow(round: i + 1, entry: game.history[i])
+            }
         }
     }
 }
 
-#Preview {
-    GameSection()
-}

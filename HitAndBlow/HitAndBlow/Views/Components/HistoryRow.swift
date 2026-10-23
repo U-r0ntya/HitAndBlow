@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct HistoryRow: View {
+    let round: Int          // 何回目か
+    let entry: GuessEntry   // その回の記録
+
     var body: some View {
         HStack {
-            Text("番号")
-            Text("-ヒット")
-            Text("-ブロー")
+            Text("\(round).")
+            Text(entry.digits.map { String($0) }.joined())
+            Text("\(entry.hit)ヒット")
+            Text("\(entry.blow)ブロー")
         }
     }
 }
 
 #Preview {
-    HistoryRow()
+    HistoryRow(round: 1, entry: GuessEntry(digits: [3, 1, 7], hit: 1, blow: 2))
 }
