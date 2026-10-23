@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct MyNumberSection: View {
+    var game: HitAndBlowViewModel
+
     var body: some View {
         HStack(spacing: 36) {
-            Text("1")
-            Text("2")
-            Text("3")
+            ForEach(0..<3, id: \.self) { index in
+                Text(digitText(index))
+            }
         }
         .font(.custom("ShipporiMinchoB1-Bold", size: 50))
     }
-}
 
-#Preview {
-    MyNumberSection()
+    // index 番目の数字を文字で返す。まだ入力されていなければ「-」
+    func digitText(_ index: Int) -> String {
+        if index < game.inputDigits.count {
+            return "\(game.inputDigits[index])"
+        } else {
+            return "-"
+        }
+    }
 }

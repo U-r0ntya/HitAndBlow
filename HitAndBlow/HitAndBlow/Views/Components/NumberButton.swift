@@ -9,10 +9,11 @@ import SwiftUI
 
 struct NumberButton: View {
     let number: Int
+    var game: HitAndBlowViewModel
     
     var body: some View {
         Button {
-            print("\(number)")  // 4-2 で game.pressNumber(n) に変える
+            game.pressNumber(number)  
         } label: {
             Text("\(number)")
                 .font(

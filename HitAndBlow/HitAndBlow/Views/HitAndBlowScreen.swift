@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HitAndBlowScreen: View {
+    @State private var game = HitAndBlowViewModel()
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -25,13 +27,13 @@ struct HitAndBlowScreen: View {
                                 alignment: .top
                             )
                         // --------------- 1：番号表示
-                        MyNumberSection()
+                        MyNumberSection(game: game)
                             .frame(
                                 maxWidth: .infinity,
                                 maxHeight: height * 0.1,
                             )
                         // --------------- 3：ボタン
-                        ControlSection()
+                        ControlSection(game: game)
                             .padding(12)
                             .frame(
                                 maxWidth: .infinity,
@@ -47,6 +49,16 @@ struct HitAndBlowScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color("TextColor"), for: .navigationBar)  // バーの背景色
             .toolbarBackground(.visible, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("ニューゲーム") {
+                        game.newGame()
+                    }.foregroundStyle(Color("TextColor"))
+                        .font(.custom("ShipporiMinchoB1-Bold", size: 25))
+                }
+            }
+
         }
     }
 }

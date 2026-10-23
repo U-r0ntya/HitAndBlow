@@ -46,7 +46,8 @@ class HitAndBlowViewModel {
             inputDigits.removeLast()  // 最後(最新)の値を消す
         }
     }
-
+    
+    // 決定ボタンを押したときの処理
     func pressDecide() {
         var hit: Int = 0
         var blow: Int = 0
