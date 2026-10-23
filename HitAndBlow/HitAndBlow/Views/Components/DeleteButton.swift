@@ -14,12 +14,12 @@ struct DeleteButton: View {
         } label: {
             Image(systemName: "delete.left")
                 .font(
-                    .system(size: 24, weight: .semibold)
+                    .system(size: 30, weight: .semibold)
                 )
                 .foregroundStyle(
                     Color("OnHighlightColor")
                 )
-                .frame(width: 60, height: 50)
+                .frame(width: 72, height: 60)
                 .background(Color("HighlightColor"))
                 .clipShape(
                     RoundedRectangle(cornerRadius: 12)

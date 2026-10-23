@@ -16,13 +16,14 @@ struct DecideButton: View {
                 .font(
                     .custom(
                         "ShipporiMinchoB1-Bold",
-                        size: 24
+                        size: 30
                     )
                 )
                 .foregroundStyle(
                     Color("BackgroundColor")
                 )
-                .frame(width: 120, height: 50)
+                .offset(y: -3)  // 文字だけ上に 4 ずらす
+                .frame(width: 120, height: 60)
                 .background(Color("MainColor"))
                 .clipShape(
                     RoundedRectangle(cornerRadius: 12)

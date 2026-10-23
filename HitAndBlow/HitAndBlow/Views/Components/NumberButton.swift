@@ -8,20 +8,22 @@
 import SwiftUI
 
 struct NumberButton: View {
+    let number: Int
+    
     var body: some View {
         Button {
-            print("1")  // 4-2 で game.pressNumber(n) に変える
+            print("\(number)")  // 4-2 で game.pressNumber(n) に変える
         } label: {
-            Text("1")
+            Text("\(number)")
                 .font(
                     .custom(
                         "ShipporiMinchoB1-Bold",
-                        size: 50
+                        size: 45
                     )
                 )
                 .offset(y: -4)  // 文字だけ上に 4 ずらす
                 .foregroundStyle(Color("BackgroundColor"))
-                .frame(width: 72, height: 72)
+                .frame(width: 60, height: 60)
                 .background(Color("TextColor"))
                 .clipShape(
                     RoundedRectangle(cornerRadius: 16)
@@ -34,8 +36,4 @@ struct NumberButton: View {
                 )
         }
     }
-}
-
-#Preview {
-    NumberButton()
 }
