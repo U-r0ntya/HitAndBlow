@@ -1,85 +1,46 @@
-// テスト出力
-
 import Playgrounds
 
-#Playground {
-    let game = HitAndBlowViewModel()  // 箱を1つ作る
+#Playground("判定") {
+    let game = HitAndBlowViewModel()
 
     // 結果を OK / NG で表示する
     func check(_ title: String, _ result: Bool) {
         print(result ? "OK" : "NG", title)
     }
 
-    // 数字をまとめて入力する
-    func input(_ nums: [Int]) {
-        for n in nums {
+    print("--- 判定（答えが 371 の場合）---")
+
+    // ゲームを始めて、答えを 371 にする
+    game.newGame()
+    game.cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
+
+    // README の表：予想、期待するヒット数、期待するブロー数
+    let cases: [(guess: [Int], hit: Int, blow: Int)] = [
+        ([4, 5, 6], 0, 0),
+        ([1, 2, 3], 0, 2),
+        ([7, 1, 3], 0, 3),
+        ([3, 9, 1], 2, 0),
+        ([3, 1, 7], 1, 2),
+        ([3, 7, 1], 3, 0),
+    ]
+
+    for c in cases {
+        // 3つの数字を入力して決定する
+        for n in c.guess {
             game.pressNumber(n)
+        }
+        game.pressDecide()
+
+        // 最後に記録された結果を確かめる
+        if let last = game.history.last {
+            let ok = last.digits == c.guess && last.hit == c.hit && last.blow == c.blow
+            check("\(c.guess) → \(last.hit)ヒット \(last.blow)ブロー（期待：\(c.hit)ヒット \(c.blow)ブロー）", ok)
+        } else {
+            check("\(c.guess) → 記録されていない", false)
         }
     }
 
-    print("--- 3-1 想定外のケース ---")
-
-    // 1. 開いた直後（ニューゲーム前）
-    input([1, 2, 3])
-    game.pressDelete()
-    game.pressDecide()
-    check("1. 開いた直後は押せない", game.inputDigits.isEmpty && game.history.isEmpty)
-
-    // 2. 1 → 1
-    game.newGame()
-    input([1, 1])
-    check("2. 同じ数字は押せない", game.inputDigits == [1])
-
-    // 3. 1 → 2 → 3 → 4
-    game.newGame()
-    input([1, 2, 3, 4])
-    check("3. 4つ目は無視される", game.inputDigits == [1, 2, 3])
-
-    // 4. 1 → 2 → 決定
-    game.newGame()
-    input([1, 2])
-    game.pressDecide()
-    check(
-        "4. 3桁未満では決定できない",
-        game.history.isEmpty && game.inputDigits == [1, 2]
-    )
-
-    // 5. 空で削除
-    game.newGame()
-    game.pressDelete()
-    check("5. 空のとき削除しても何も起きない", game.inputDigits.isEmpty)
-
-    // 6. 正解後に数字・決定
-    game.newGame()
-    game.cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
-    input([3, 7, 1])
-    game.pressDecide()
-    input([5])
-    game.pressDecide()
-    check(
-        "6. 正解後は押せない",
-        game.gameState == .finishGame && game.inputDigits.isEmpty
-            && game.history.count == 1
-    )
-
-    // 7. 同じ予想を2回
-    game.newGame()
-    game.cpuNumber = ThreeDigits(first: 3, second: 7, third: 1)
-    input([1, 2, 3])
-    game.pressDecide()
-    input([1, 2, 3])
-    game.pressDecide()
-    check("7. 同じ予想も受け付けて回数に数える", game.history.count == 2)
-
-    // 8. 途中でニューゲーム
-    game.newGame()
-    input([1, 2, 3])
-    game.pressDecide()
-    input([4])
-    game.newGame()
-    check(
-        "8. 途中のニューゲームで全部リセット",
-        game.history.isEmpty && game.inputDigits.isEmpty
-            && game.gameState == .nowGame
-    )
+    // 371 で正解になっているか
+    check("371 でクリアになる", game.isCleared)
+    check("6回目でクリア", game.history.count == 6)
 }
