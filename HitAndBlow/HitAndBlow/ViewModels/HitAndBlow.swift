@@ -11,8 +11,19 @@ class HitAndBlowViewModel {
     var inputDigits: [Int] = []
     // プレイヤーの履歴
     var history: [GuessEntry] = []
-
+    // 決定ボタンを押せるか
+    var canDecide: Bool {
+        gameState == .nowGame && inputDigits.count == 3
+    }
+    // 削除ボタンを押せるか
+    var canDelete: Bool {
+        gameState == .nowGame && !inputDigits.isEmpty
+    }
     // -- 処理 --
+    // 数字ボタンを押せるか
+    func canPressNumber(_ num: Int) -> Bool {
+        gameState == .nowGame &&  !inputDigits.contains(num)
+    }
     // 重複しないランダムな三桁の数値を設定
     static func createCpuNum() -> ThreeDigits {
         var allNumbers: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -89,11 +100,5 @@ class HitAndBlowViewModel {
         cpuNumber = HitAndBlowViewModel.createCpuNum()
         history = []
         inputDigits = []
-    }
-
-    func displayResult() {
-        for entry in history {
-            print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
-        }
     }
 }

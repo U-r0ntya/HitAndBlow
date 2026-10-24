@@ -31,8 +31,7 @@ struct DeleteButton: View {
                     x: 0,
                     y: 2
                 )
-        }
+        }.disabled(!game.canDelete)
+            .opacity(game.canDelete ? 1 : 0.4)
     }
 }
-
-

@@ -35,6 +35,7 @@ struct NumberButton: View {
                     x: 0,
                     y: 2
                 )
-        }
+        }.disabled(!game.canPressNumber(number))
+            .opacity(game.canPressNumber(number) ? 1 : 0.4)
     }
 }

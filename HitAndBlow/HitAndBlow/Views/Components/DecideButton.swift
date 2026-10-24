@@ -35,6 +35,7 @@ struct DecideButton: View {
                     x: 0,
                     y: 2
                 )
-        }
+        }.disabled(!game.canDecide)
+            .opacity(game.canDecide ? 1 : 0.4)
     }
 }
