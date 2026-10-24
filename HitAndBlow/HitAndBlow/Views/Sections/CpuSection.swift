@@ -13,9 +13,15 @@ struct CpuSection: View {
         VStack {
             HStack {
                 Text("CPU")
-                Text("\(game.cpuNumber.digits[0])")
-                Text("\(game.cpuNumber.digits[1])")
-                Text("\(game.cpuNumber.digits[2])")
+                if game.isCleared {             Text("\(game.cpuNumber.digits[0])")
+                    Text("\(game.cpuNumber.digits[1])")
+                    Text("\(game.cpuNumber.digits[2])")
+                }else{
+                    Text("-")
+                    Text("-")
+                    Text("-")
+                }
+                
             }
         }
     }

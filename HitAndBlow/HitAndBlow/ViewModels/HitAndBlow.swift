@@ -19,6 +19,14 @@ class HitAndBlowViewModel {
     var canDelete: Bool {
         gameState == .nowGame && !inputDigits.isEmpty
     }
+    // 始めたてかどうか
+    var isStart: Bool {
+        gameState == .finishGame && history.isEmpty
+    }
+    // クリアしたかどうか
+    var isCleared: Bool {
+        gameState == .finishGame && history.last?.hit == 3
+    }
     // -- 処理 --
     // 数字ボタンを押せるか
     func canPressNumber(_ num: Int) -> Bool {
@@ -67,7 +75,6 @@ class HitAndBlowViewModel {
             return
         }
         guard inputDigits.count == 3 else {
-            print("数字は三つ選択せれていません")
             return
         }
         // 比較し加算する
@@ -85,11 +92,6 @@ class HitAndBlowViewModel {
         // ３ヒットならば
         if hit == 3 {
             gameState = .finishGame
-            print("正解！ \(history.count)回目でクリア")
-        }
-        // 仮
-        for entry in history {
-            print("\(entry.digits) \(entry.hit)ヒット \(entry.blow)ブロー")
         }
         // からにする
         inputDigits = []

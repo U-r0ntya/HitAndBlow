@@ -6,9 +6,9 @@ struct HitAndBlowScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("BackgroundColor")
+                Color("BackgroundColor")   // 一番奥：背景
                     .ignoresSafeArea()
-                GeometryReader { geometry in
+                GeometryReader { geometry in   // 真ん中：今の画面
                     let height = geometry.size.height  // 使える高さ
 
                     VStack(spacing: 0) {
@@ -42,6 +42,12 @@ struct HitAndBlowScreen: View {
                             )
                     }
                 }
+                if game.isCleared {            // 一番手前：クリアの表示
+                       ClearCard(game: game)
+                   }
+                if game.isStart {            // 一番手前：クリアの表示
+                       StartCrard(game: game)
+                   }
             }
             .foregroundStyle(Color("TextColor"))
             .font(.custom("ShipporiMinchoB1-Bold", size: 34))
