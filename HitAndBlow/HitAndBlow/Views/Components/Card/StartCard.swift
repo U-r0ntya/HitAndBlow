@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StartCrard: View {
+struct StartCard: View {
     var game: HitAndBlowViewModel
 
     var body: some View {
